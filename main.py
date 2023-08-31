@@ -86,9 +86,10 @@ def StandardChecker(value,number):
      return 1
 
 def BotChecker(input_data):
+  try:
     scl_obj = StandardScaler()
     new_data_scaled = scl_obj.transform(input_data)
-    predicted_prob = joblib_in.predict_proba(new_data_scaled)[0][1]
+    predicted_prob = joblib_in.predict_proba(new_data_scaled)
 
     if predicted_prob >= 0.8:
         return "Bot ",predicted_prob
@@ -98,6 +99,10 @@ def BotChecker(input_data):
         return "Less likely a bot ",predicted_prob
     else:
         return "Not a bot ",predicted_prob
+  except NotFittedError:
+    return -1
+  return
+
       
 def main():
     st.title('Twitter Bot Detection')
