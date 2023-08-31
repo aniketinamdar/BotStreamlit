@@ -77,10 +77,13 @@ def BlankChecker(value):
       return 1
    
 def StandardChecker(value,number):
+  if value:
     if int(value)<=number and int(value)>=0:
       return 0
     else:
       return 1
+  else:
+     return 1
 
 def BotChecker(input_data):
     scl_obj = StandardScaler()
