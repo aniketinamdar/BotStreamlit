@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics as mt
 from sklearn.preprocessing import StandardScaler
+import tensorflow as tf
 
 
 joblib_in = joblib.load(open("bot_classifier.joblib", "rb"))
