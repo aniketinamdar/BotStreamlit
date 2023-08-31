@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import spacy
-import pipeline
+from transformers import pipeline
 from datetime import datetime, timedelta
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics as mt
