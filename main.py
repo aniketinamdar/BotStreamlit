@@ -11,9 +11,7 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 
 
-loaded_data = joblib.load(open("bot_classifier_scaled.joblib", "rb"))
-lr_clf_scaled = loaded_data['model']
-scl_obj = loaded_data['scaler']
+joblib_in = joblib.load(open("bot_classifier.joblib", "rb"))
 
 nlp = spacy.load('en_core_web_sm')
 sentiment_analyzer = pipeline("sentiment-analysis")
@@ -88,17 +86,18 @@ def StandardChecker(value,number):
      return 1
 
 def BotChecker(input_data):
+    scl_obj = StandardScaler()
     new_data_scaled = scl_obj.transform(input_data)
-    predicted_prob = lr_clf_scaled.predict_proba(new_data_scaled)
+    predicted_prob = joblib_in.predict_proba(new_data_scaled)
 
-    if predicted_prob[0][1] >= 0.8:
-        return "Bot", predicted_prob
-    elif predicted_prob[0][1] >= 0.6:
-        return "More likely a bot", predicted_prob
-    elif predicted_prob[0][1] >= 0.4:
-        return "Less likely a bot", predicted_prob
+    if predicted_prob >= 0.8:
+        return "Bot ",predicted_prob
+    elif predicted_prob >= 0.6:
+        return "More likely a bot ",predicted_prob
+    elif predicted_prob >= 0.4:
+        return "Less likely a bot ",predicted_prob
     else:
-        return "Not a bot", predicted_prob
+        return "Not a bot ",predicted_prob
       
 def main():
     st.title('Twitter Bot Detection')
@@ -160,9 +159,8 @@ def main():
                ]]
       
     if st.button("Bot Checker"):
-        output, predicted_prob = BotChecker(input_data)
-        st.success('Bot or Not: {}, Prediction Probabilities: {}'.format(output, predicted_prob))
-
+        output = BotChecker(input_data)
+        st.success('Bot or Not : {}'.format(output))
 
 
 if __name__ == '__main__':
