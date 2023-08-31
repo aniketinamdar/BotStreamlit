@@ -54,14 +54,15 @@ def tweet_checker(tweet):
       return 0
     
 def is_old_account(value):
-    created_date = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-    
-    old_threshold = datetime.now() - timedelta(days=365)  
-    
-    if created_date <= old_threshold:
-        return True  
+    if value:
+        created_date = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+        old_threshold = datetime.now() - timedelta(days=365)  
+        if created_date <= old_threshold:
+            return 0  
+        else:
+            return 1
     else:
-        return False  
+        return 0  # Handle case where timestamp is empty  
 
 def identify_account_age(row):
     if is_old_account(row):
