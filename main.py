@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
+import pickle
 import spacy
 from transformers import pipeline
 from datetime import datetime, timedelta
@@ -11,7 +11,8 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 
 
-joblib_in = joblib.load(open("bot_classifier.joblib", "rb"))
+with open("bot_classifier.pkl",'rb') as file:
+  pickle_model = pickle.load(file)
 
 nlp = spacy.load('en_core_web_sm')
 sentiment_analyzer = pipeline("sentiment-analysis")
@@ -88,7 +89,7 @@ def StandardChecker(value,number):
 def BotChecker(input_data):
     scl_obj = StandardScaler()
     new_data_scaled = scl_obj.transform(input_data)
-    predicted_prob = joblib_in.predict_proba(new_data_scaled)
+    predicted_prob = pickle_model.predict(new_data_scaled)
 
     if predicted_prob >= 0.8:
         return "Bot ",predicted_prob
